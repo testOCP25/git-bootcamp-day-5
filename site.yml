@@ -21,3 +21,22 @@
       password: "{{ db_password }}"
       priv: "{{ wp_db_name }}.*:ALL"
       state: present
+
+  - name: Install nginx and php-fpm
+    ansible.builtin.apt:
+      name:
+        - nginx
+        - php-fpm
+      state: present
+
+  - name: Deploy nginx virtual host
+    ansible.builtin.template:
+      src: nginx.conf.j2
+      dest: /etc/nginx/sites-available/wordpress
+      notify: Reload nginx
+
+  - name: Deploy php-fpm pool config
+    ansible.builtin.template:
+      src: php-fpm.conf.j2
+      dest: "/etc/php/{{ php_version }}/fpm/pool.d/wordpress.conf"
+      notify: Restart php-fpm

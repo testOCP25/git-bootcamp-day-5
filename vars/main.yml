@@ -3,3 +3,6 @@
 site_name: wordpress-demo
 wp_db_name: wordpress
 wp_db_user: wp_user
+php_version: "8.2"
+nginx_client_max_body_size: "10m"
+nginx_keepalive_timeout: 30
