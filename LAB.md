@@ -135,12 +135,12 @@ a495afd (origin/main, origin/HEAD, main) HEAD@{2}: checkout: moving from recover
 ```
 Состояние при удалении ветки
 
-![Удаление ветки](screenshots/star1_security_restore.png)
+![Удаление ветки](screenshots/star1--security_restore.png)
 
 
 Итоговый результат
 
-![Восстановление](screenshots/star1_security_restore.png)
+![Восстановление](screenshots/star1--security_restore.png)
 ---
 
 ## ⭐2 — pickaxe с regexp (`-G`)
@@ -159,9 +159,9 @@ ddaed7a feat(wordpress): add WordPress download and configuration
 ddaed7a feat(wordpress): add WordPress download and configuration
 ```
 Найдено два коммита - удаление и добавление пароля:
-![git show 0715745](screenshots\star2-0715745.png)
+![git show 0715745](screenshots/star2--0715745.png)
 
-![git show ddaed7a](screenshots\star2-ddaed7a.png)
+![git show ddaed7a](screenshots/star2--ddaed7a.png)
 
 
 **Команда с `-G`, находящая коммит `feat(php-fpm)` через regex на обе директивы:**
@@ -178,4 +178,4 @@ ddaed7a feat(wordpress): add WordPress download and configuration
 Разница в том, что -S ищет коммиты, в которых количество вхождений искомой строки изменилось (появилась или исчезла), а -G ищет коммиты, где в патче появляется или удаляется строка, соответствующая регулярному выражению, даже если общее количество вхождений не изменилось.
 Но в моём случае реально сработало только последний вывод, первая задача выдавала одинаковый результат при разных ключах.
 
-![git show 8bf4ed7](screenshots\star2-8bf4ed7.png)
+![git show 8bf4ed7](screenshots/star2--8bf4ed7.png)
