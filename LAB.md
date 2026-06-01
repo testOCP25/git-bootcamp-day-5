@@ -95,9 +95,20 @@ ddaed7a HEAD@{1}: reset: moving to HEAD~2
 
 - Хеш отменённого коммита (`fix(nginx): update nginx template defaults and keepalive_timeout`): `c93c531`
 - Заголовок revert-коммита (как в `git log --oneline -1` после revert): `7a5e35d`
-- Хеш security-коммита после ротации пароля: `#TODO`
-- Первая строка body этого security-коммита: `#TODO`
-- Как теперь выглядит строка в `vars/main.yml` вместо открытого пароля: `#TODO`
+- Хеш security-коммита после ротации пароля: `0715745`
+- Первая строка body этого security-коммита: `chore(security): removed db password`
+- Как теперь выглядит строка в `vars/main.yml` вместо открытого пароля:
+```yaml
+site_name: wordpress-demo
+wp_db_name: wordpress
+wp_db_user: wp_user
+php_version: "8.2"
+nginx_client_max_body_size: "10m"
+nginx_keepalive_timeout: 30
+# db_password: ""
+wordpress_download_url: "https://wordpress.org/latest.tar.gz"
+
+```
 
 **Revert vs reset --hard (2–3 предложения, своими словами):**
 
