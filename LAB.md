@@ -8,6 +8,7 @@
     - [Часть 2 — reset --hard и reflog](#часть-2--reset---hard-и-reflog)
     - [Часть 3 — revert](#часть-3--revert)
   - [⭐1 — удалённая ветка](#1--удалённая-ветка)
+  - [](#)
   - [⭐2 — pickaxe с regexp (`-G`)](#2--pickaxe-с-regexp--g)
 
 
@@ -118,41 +119,61 @@ wordpress_download_url: "https://wordpress.org/latest.tar.gz"
 
 Если после `reset --hard` сделать `push --force`, история перезаписывается, и всем остальным разработчикам придётся вручную приводить свои локальные ветки в соответствие (например, через `git fetch --force`), что чревато потерей их работы.
 
-
 ---
 
 ## ⭐1 — удалённая ветка
 
-[FIXME: какую строку из `git reflog` использовали (скопируйте целиком) и почему именно её, а не соседнюю запись.]
+Из `git reflog` взял эту строчку
+`3a845ac HEAD@{1}: checkout: moving from main to feat/security-hardening`
+Эта первая строка в ветке, поэтому взял именно ее
 
 ```bash
-# git reflog | grep security-hardening
+# git reflog | head -3
+d886e0f (HEAD -> feat/security-hardening, origin/feat/security-hardening) HEAD@{0}: commit: docs: added some fake lines for commit
+3a845ac HEAD@{1}: checkout: moving from main to feat/security-hardening
+a495afd (origin/main, origin/HEAD, main) HEAD@{2}: checkout: moving from recovery to main
 ```
+Состояние при удалении ветки
 
+![Удаление ветки](screenshots/star1_security_restore.png)
+
+
+Итоговый результат
+
+![Восстановление](screenshots/star1_security_restore.png)
 ---
 
 ## ⭐2 — pickaxe с regexp (`-G`)
 
+```bash
+# git --no-pager log -S 'wp_s3cr3t' --oneline
+0715745 chore(security): removed db password
+ddaed7a feat(wordpress): add WordPress download and configuration
+```
+
 **Команда с `-G`, находящая тот же коммит, что и `-S 'wp_s3cr3t'`:**
 
 ```bash
-# [FIXME: подберите и запишите команду]
+# git --no-pager log -G 'wp_s3cr3t' --oneline -- vars/main.yml
+0715745 chore(security): removed db password
+ddaed7a feat(wordpress): add WordPress download and configuration
 ```
+Найдено два коммита - удаление и добавление пароля:
+![git show 0715745](screenshots\star2-0715745.png)
 
-```text
-[FIXME: вставьте вывод команды]
-```
+![git show ddaed7a](screenshots\star2-ddaed7a.png)
+
 
 **Команда с `-G`, находящая коммит `feat(php-fpm)` через regex на обе директивы:**
 
 ```bash
-# [FIXME: подберите и запишите команду]
-```
-
-```text
-[FIXME: вставьте вывод команды]
+# git --no-pager log -G 'wp_s3cr3t|pm.max_children|request_terminate_timeout' --oneline
+0715745 chore(security): removed db password
+8bf4ed7 feat(php-fpm): tune pm.max_children and request timeout
+ddaed7a feat(wordpress): add WordPress download and configuration
 ```
 
 **Разница `-S` и `-G` на примере из вашей истории (2–3 предложения):**
 
-#TODO
+Разница в том, что -S ищет коммиты, в которых количество вхождений искомой строки изменилось (появилась или исчезла), а -G ищет коммиты, где в патче появляется или удаляется строка, соответствующая регулярному выражению, даже если общее количество вхождений не изменилось.
+Но в моём случае реально сработало только последний вывод, первая задача выдавала одинаковый результат при разных ключах.
