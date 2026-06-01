@@ -6,5 +6,5 @@ wp_db_user: wp_user
 php_version: "8.2"
 nginx_client_max_body_size: "10m"
 nginx_keepalive_timeout: 30
-db_password: "wp_s3cr3t"
+# db_password: ""
 wordpress_download_url: "https://wordpress.org/latest.tar.gz"
